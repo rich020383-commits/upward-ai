@@ -32,7 +32,9 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/chat/", {
+      // Apuntamos dinámicamente al backend real en Render
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://upward-ai-8n4i.onrender.com";
+      const res = await fetch(`${baseUrl}/api/chat/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
