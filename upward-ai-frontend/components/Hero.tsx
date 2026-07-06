@@ -27,13 +27,23 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-5 justify-center relative z-50">
             {/* Los botones necesitan un z-index alto para poder ser clickeados */}
-            <button className="group bg-[#2563EB] text-white px-8 py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-[#3B82F6] hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300">
-              Agenda una demostración
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="px-8 py-4 rounded-full font-medium text-[#111827] bg-white border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all duration-300">
-              Conoce nuestras soluciones
-            </button>
+            <button 
+  onClick={() => window.dispatchEvent(new Event('abrir-chat'))}
+  className="group bg-[#2563EB] text-white px-8 py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-[#3B82F6] hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300"
+>
+  Agenda una demostración
+  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+</button>
+
+<button 
+  onClick={() => {
+    const section = document.getElementById('soluciones');
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+  }}
+  className="px-8 py-4 rounded-full font-medium text-[#111827] bg-white border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all duration-300"
+>
+  Conoce nuestras soluciones
+</button>
           </div>
 
           {/* Estadísticas minimalistas */}

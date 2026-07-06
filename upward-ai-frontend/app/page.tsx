@@ -48,9 +48,12 @@ export default function Home() {
         
         {/* ... enlaces y botones de tu navbar ... */}
   
-  <button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-    Agendar llamada
-  </button>
+  <button 
+  onClick={() => window.dispatchEvent(new Event('abrir-chat'))}
+  className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+>
+  Agendar llamada
+</button>
 </motion.nav>
 
       {/* 🌌 HERO SECTION DARK MODE (El Slogan es el protagonista) */}

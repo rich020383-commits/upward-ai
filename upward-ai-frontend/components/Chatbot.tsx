@@ -6,9 +6,12 @@ import { MessageSquare, X, Send, Bot, Sparkles } from "lucide-react";
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  
+  // 🔥 ACTUALIZADO: El saludo premium de ventas para perfilar al cliente
   const [messages, setMessages] = useState([
-    { role: "bot", content: "¡Hola! Soy el Agente Inteligente de Upward AI. ¿En qué proceso de tu empresa te gustaría implementar IA hoy?" }
+    { role: "bot", content: "¡Hola! Veo que estás listo para llevar tu empresa al siguiente nivel con Upward AI. Para entender mejor tu operación y asignarte el especialista adecuado, cuéntame: ¿Cuál es el proceso que más tiempo le consume a tu equipo actualmente?" }
   ]);
+  
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
@@ -22,6 +25,20 @@ export default function Chatbot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
+
+  // 🔥 NUEVO: El "oído" del chatbot para escuchar los botones de la página web
+  useEffect(() => {
+    const escucharBoton = () => {
+      setIsOpen(true); 
+    };
+
+    window.addEventListener('abrir-chat', escucharBoton);
+
+    // Limpieza del evento por seguridad
+    return () => {
+      window.removeEventListener('abrir-chat', escucharBoton);
+    };
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -63,7 +80,7 @@ export default function Chatbot() {
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen((prev) => !prev)}
         className={`fixed bottom-6 right-6 p-4 rounded-full shadow-premium hover:shadow-2xl transition-all z-50 flex items-center justify-center ${
           isOpen ? 'bg-slate-900 text-white' : 'bg-blue-600 text-white'
         }`}
