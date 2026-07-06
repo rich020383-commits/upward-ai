@@ -98,27 +98,55 @@ export default function Chatbot() {
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
             className="fixed bottom-24 right-6 w-[350px] md:w-[400px] h-[550px] bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-200 z-50 flex flex-col overflow-hidden"
           >
-            {/* Header del Chat */}
-            <div className="bg-slate-950 p-5 text-white flex items-center justify-between shrink-0">
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                    <Bot className="w-6 h-6 text-white" />
+            {/* Header del Chat con Orbe Neuronal Premium */}
+            <div className="bg-slate-950 p-5 text-white flex items-center justify-between shrink-0 border-b border-slate-800 shadow-sm">
+              <div className="flex items-center space-x-4">
+                
+                {/* 🌌 EL ORBE ANIMADO (Reemplaza al video) */}
+                <div className="relative w-12 h-12 flex items-center justify-center">
+                  {/* Anillo exterior rápido */}
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.8, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 rounded-full border-2 border-cyan-400/50"
+                  />
+                  {/* Anillo de onda expansiva lenta */}
+                  <motion.div
+                    animate={{ scale: [1, 1.4, 1], opacity: [0.1, 0.4, 0.1] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    className="absolute inset-0 rounded-full border border-blue-500/30"
+                  />
+                  {/* Núcleo central brillante */}
+                  <div className="relative w-8 h-8 bg-gradient-to-tr from-blue-600 to-cyan-300 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.8)] flex items-center justify-center z-10">
+                    <Bot className="w-4 h-4 text-white" />
                   </div>
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-950 rounded-full"></span>
+                  {/* Punto de estado "Online" */}
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-950 rounded-full z-20 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
                 </div>
+
+                {/* Textos del sistema */}
                 <div>
-                  <h3 className="font-bold text-sm tracking-wide flex items-center gap-1">
-                    Upward AI <Sparkles className="w-3 h-3 text-blue-400" />
+                  <h3 className="font-bold text-sm tracking-wide flex items-center gap-1 text-slate-100">
+                    Upward AI <Sparkles className="w-3 h-3 text-cyan-400" />
                   </h3>
-                  <p className="text-xs text-slate-400">Agente Inteligente 24/7</p>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    {/* Efecto de "escribiendo/procesando" perpetuo muy sutil */}
+                    <motion.div 
+                      animate={{ opacity: [0.4, 1, 0.4] }} 
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="w-1.5 h-1.5 bg-cyan-400 rounded-full"
+                    />
+                    <p className="text-[10px] text-cyan-400 uppercase tracking-widest font-semibold">
+                      Sistema Operativo
+                    </p>
+                  </div>
                 </div>
               </div>
               
               {/* Botón de cerrar superior */}
               <button 
                 onClick={() => setIsOpen(false)} 
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-500 hover:text-white hover:rotate-90 transition-all duration-300"
               >
                 <X className="w-5 h-5" />
               </button>
