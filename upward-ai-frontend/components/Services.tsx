@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Bot, Cpu, Zap, BarChart3, Users, ShieldCheck } from "lucide-react";
 
 export default function Services() {
@@ -37,7 +37,8 @@ export default function Services() {
     },
   ];
 
-  const containerVariants = {
+  // ¡Aquí está la magia! Le decimos a TypeScript que esto es tipo "Variants"
+  const containerVariants: Variants = {
     hidden: {},
     visible: {
       transition: {
@@ -46,7 +47,7 @@ export default function Services() {
     },
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
