@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Menu, ArrowRight } from "lucide-react";
 
 // 1. Aquí recibimos la propiedad para abrir el modal
-export default function Header({ onOpenModal }) {
+export default function Header({ onOpenModal }: { onOpenModal: () => void }) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
