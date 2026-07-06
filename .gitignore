@@ -1,0 +1,5 @@
+.env
+upward-ai-backend/.env
+__pycache__/
+node_modules/
+.next/
