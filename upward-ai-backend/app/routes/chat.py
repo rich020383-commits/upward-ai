@@ -53,8 +53,9 @@ async def procesar_chat(chat: ChatRequest):
         }
         
     except Exception as e:
+        # 🔥 EL ESCUDO ANTI-CAÍDAS: En lugar de un error 500, devolvemos una respuesta controlada
         print(f"Error IA (Google GenAI): {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Error conectando con el motor de IA."
-        )
+        return {
+            "status": "error",
+            "reply": "Estoy procesando un alto volumen de información en este momento. Por favor, dame unos segundos para estabilizar mi conexión y vuelve a escribirme."
+        }

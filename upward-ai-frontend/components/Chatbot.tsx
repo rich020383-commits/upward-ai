@@ -99,19 +99,29 @@ export default function Chatbot() {
             className="fixed bottom-24 right-6 w-[350px] md:w-[400px] h-[550px] bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-200 z-50 flex flex-col overflow-hidden"
           >
             {/* Header del Chat */}
-            <div className="bg-slate-950 p-5 text-white flex items-center space-x-3 shrink-0">
-              <div className="relative">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                  <Bot className="w-6 h-6 text-white" />
+            <div className="bg-slate-950 p-5 text-white flex items-center justify-between shrink-0">
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                    <Bot className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-950 rounded-full"></span>
                 </div>
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-950 rounded-full"></span>
+                <div>
+                  <h3 className="font-bold text-sm tracking-wide flex items-center gap-1">
+                    Upward AI <Sparkles className="w-3 h-3 text-blue-400" />
+                  </h3>
+                  <p className="text-xs text-slate-400">Agente Inteligente 24/7</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-bold text-sm tracking-wide flex items-center gap-1">
-                  Upward AI <Sparkles className="w-3 h-3 text-blue-400" />
-                </h3>
-                <p className="text-xs text-slate-400">Agente Inteligente 24/7</p>
-              </div>
+              
+              {/* Botón de cerrar superior */}
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
             
             {/* Área de mensajes */}
