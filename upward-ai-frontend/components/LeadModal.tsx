@@ -10,10 +10,13 @@ export default function LeadModal({ isOpen, onClose }: { isOpen: boolean; onClos
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const onSubmit = async (data) => {
+  // 1. SOLUCIÓN TYPESCRIPT: (data: any)
+  const onSubmit = async (data: any) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/leads/", {
+      // 2. SOLUCIÓN CONEXIÓN: Apuntamos al backend en Render
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://upward-ai-8n4i.onrender.com";
+      const response = await fetch(`${baseUrl}/api/leads/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
