@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Building2, User, Mail, Phone, ArrowRight, Loader2 } from "lucide-react";
 import { useState } from "react";
 
-export default function LeadModal({ isOpen, onClose }) {
+export default function LeadModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
