@@ -168,7 +168,22 @@ export default function Chatbot() {
                         : 'bg-white text-slate-700 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100'
                     }`}
                   >
-                    {m.content}
+                    {/* 🔥 LA MAGIA: Si la IA manda el gatillo, dibujamos el botón */}
+                    {m.content.includes('[ABRIR_FORMULARIO]') ? (
+                      <div className="flex flex-col gap-3">
+                        {/* Imprimimos el texto sin la etiqueta secreta */}
+                        <span>{m.content.replace('[ABRIR_FORMULARIO]', '')}</span>
+                        {/* Dibujamos el botón que dispara el evento al Modal */}
+                        <button 
+                          onClick={() => window.dispatchEvent(new Event('abrir-modal-lead'))}
+                          className="bg-blue-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-blue-700 hover:shadow-lg transition-all shadow-sm flex items-center justify-center gap-2 mt-2"
+                        >
+                          📋 Llenar Formulario
+                        </button>
+                      </div>
+                    ) : (
+                      <span>{m.content}</span>
+                    )}
                   </div>
                 </motion.div>
               ))}

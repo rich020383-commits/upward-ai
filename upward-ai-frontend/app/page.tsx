@@ -1,12 +1,23 @@
 "use client";
 
+import { useState, useEffect } from "react"; // 🔥 Añadimos los hooks de React
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Lightbulb, Building2, Palette, MonitorSmartphone, Video, Bot, TrendingUp, CheckCircle2 } from "lucide-react";
 import ParticleBackground from "@/components/ParticleBackground";
 import Chatbot from "@/components/Chatbot"; 
+import LeadModal from "@/components/LeadModal"; // 🔥 Importamos tu nuevo formulario
 
 export default function Home() {
+  // 🔥 ESTADO Y OÍDO DEL MODAL
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const abrirModal = () => setIsModalOpen(true); 
+    window.addEventListener('abrir-modal-lead', abrirModal);
+    return () => window.removeEventListener('abrir-modal-lead', abrirModal);
+  }, []);
+
   const { scrollY } = useScroll();
   // 🔥 CRISTAL OSCURO ACTIVADO: La barra se vuelve negra semi-transparente al hacer scroll
   const navBackground = useTransform(scrollY, [0, 50], ["rgba(3, 7, 18, 0)", "rgba(3, 7, 18, 0.85)"]);
@@ -39,33 +50,26 @@ export default function Home() {
         className="fixed top-0 w-full z-50 border-b transition-colors duration-300 px-6 py-3 flex justify-between items-center"
       >
         <div className="flex items-center gap-4">
-          {/* 🔥 TU NUEVO LOGO EN VIVO Y EN 3D DIGITAL */}
           <AnimatedLogo />
-          
-          {/* Nombre de la marca al lado con tipografía limpia estilo Apple */}
           <span className="font-medium text-lg tracking-widest text-white">UPWARD AI</span>
         </div>
         
-        {/* ... enlaces y botones de tu navbar ... */}
-  
-  <button 
-  onClick={() => window.dispatchEvent(new Event('abrir-chat'))}
-  className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(37,99,235,0.4)]"
->
-  Agendar llamada
-</button>
-</motion.nav>
+        <button 
+          onClick={() => window.dispatchEvent(new Event('abrir-chat'))}
+          className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+        >
+          Agendar llamada
+        </button>
+      </motion.nav>
 
-      {/* 🌌 HERO SECTION DARK MODE (El Slogan es el protagonista) */}
+      {/* 🌌 HERO SECTION DARK MODE */}
       <section className="relative min-h-screen bg-[#030712] flex flex-col justify-center overflow-hidden">
         
-        {/* Capa de texto principal (z-10) */}
         <div className="container mx-auto px-6 text-center relative z-10 pt-32 pb-20">
           <div className="max-w-5xl mx-auto">
             
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               
-              {/* TÍTULO CON ESLOGAN DE MARCA */}
               <h1 className="text-5xl md:text-7xl font-medium tracking-tight text-white leading-[1.15] mb-8">
                 Convertimos{" "}
                 <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">
@@ -84,7 +88,10 @@ export default function Home() {
 
               {/* Botones de acción */}
               <div className="flex flex-col sm:flex-row gap-5 justify-center relative z-50">
-                <button className="group bg-blue-600 text-white px-8 py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all duration-300">
+                <button 
+                  onClick={() => window.dispatchEvent(new Event('abrir-chat'))} // 🔥 Reconectado
+                  className="group bg-blue-600 text-white px-8 py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all duration-300"
+                >
                   Agenda una demostración
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -109,12 +116,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 🌌 CAPA DE PARTÍCULAS (z-20) */}
         <div className="absolute inset-0 z-20 pointer-events-none">
            <ParticleBackground />
         </div>
         
-        {/* Difuminado suave */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-white z-30 pointer-events-none"></div>
       </section>
 
@@ -163,19 +168,21 @@ export default function Home() {
           <h2 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-10 leading-[1]">
             El futuro de tu empresa <br className="hidden md:block"/> comienza hoy.
           </h2>
-          <button className="bg-white text-[#111827] px-10 py-5 rounded-full text-lg font-bold hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all duration-300">
+          <button 
+            onClick={() => window.dispatchEvent(new Event('abrir-chat'))} // 🔥 Reconectado
+            className="bg-white text-[#111827] px-10 py-5 rounded-full text-lg font-bold hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all duration-300"
+          >
             Agenda una demostración
           </button>
         </div>
       </section>
 
-      {/* FOOTER PREMIUM CON LOGO Y ESLOGAN */}
+      {/* FOOTER PREMIUM */}
       <footer className="bg-white py-12 border-t border-gray-100 relative z-10">
         <div className="container mx-auto px-6 flex flex-col items-center md:items-start md:flex-row justify-between text-sm text-[#6B7280] font-medium relative z-50">
           
           <div className="flex flex-col items-center md:items-start mb-8 md:mb-0">
             <div className="flex items-center gap-4 mb-4 text-[#111827]">
-              {/* Logo animado en versión clara automáticamente adaptado */}
               <AnimatedLogo />
               <span className="font-bold text-xl tracking-tighter">UPWARD AI</span>
             </div>
@@ -196,6 +203,11 @@ export default function Home() {
       {/* 🤖 EL WIDGET DE TU CHATBOT IA */}
       <div className="relative z-50">
         <Chatbot />
+      </div>
+
+      {/* 📋 EL FORMULARIO DE CAPTURA (Se abre cuando isModalOpen es true) */}
+      <div className="relative z-[60]">
+        <LeadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </div>
 
     </main>
