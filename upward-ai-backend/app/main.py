@@ -14,6 +14,7 @@ app = FastAPI(
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://upward-ai-frontend.onrender.com", # <-- ¡La llave maestra para producción!
 ]
 
 app.add_middleware(
