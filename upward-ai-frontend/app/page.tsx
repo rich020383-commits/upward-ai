@@ -29,7 +29,7 @@ export default function Home() {
     { icon: Building2, title: "Necesito crear mi empresa", desc: "Contamos con especialistas aliados para la estructuración formal.", tags: ["Constitución", "Asesoría legal", "Contabilidad", "Tributación", "Registro de marca"] },
     { icon: Palette, title: "Quiero una marca profesional", desc: "Diseño premium para destacar en tu industria.", tags: ["Logo", "Branding", "Manual de marca", "Presentaciones", "Identidad visual"] },
     { icon: MonitorSmartphone, title: "Necesito presencia digital", desc: "Desarrollo de alto nivel técnico y visual.", tags: ["Página web", "Landing Page", "Tienda Online", "App móvil", "Software a medida"] },
-    { icon: Video, title: "Upward AI Studio", desc: "Transformamos productos comunes en marcas visualmente espectaculares.", tags: ["Comerciales IA", "Videos publicitarios", "Fotografía de producto", "Reels / TikTok", "Meta Ads"], isPremium: true },
+    { icon: Video, title: "Up AI Studio", desc: "Transformamos productos comunes en marcas visualmente espectaculares.", tags: ["Comerciales IA", "Videos publicitarios", "Fotografía de producto", "Reels / TikTok", "Meta Ads"], isPremium: true },
     { icon: Bot, title: "Quiero automatizar mi empresa", desc: "Eficiencia operativa mediante inteligencia artificial.", tags: ["Agentes IA", "Chatbots", "WhatsApp IA", "Agentes de Voz", "CRM", "Integraciones APIs"] },
     { icon: TrendingUp, title: "Quiero crecer", desc: "Estrategias de adquisición de clientes basadas en datos.", tags: ["Marketing", "Meta & Google Ads", "SEO", "Consultoría", "Escalamiento"] },
   ];
@@ -51,7 +51,7 @@ export default function Home() {
       >
         <div className="flex items-center gap-4">
           <AnimatedLogo />
-          <span className="font-medium text-lg tracking-widest text-white">UPWARD AI</span>
+          <span className="font-medium text-lg tracking-widest text-white">UP AI</span>
         </div>
         
         <button 
@@ -184,7 +184,7 @@ export default function Home() {
           <div className="flex flex-col items-center md:items-start mb-8 md:mb-0">
             <div className="flex items-center gap-4 mb-4 text-[#111827]">
               <AnimatedLogo />
-              <span className="font-bold text-xl tracking-tighter">UPWARD AI</span>
+              <span className="font-bold text-xl tracking-tighter">UP AI</span>
             </div>
             
             <p className="text-slate-500 font-light mt-1 text-center md:text-left">

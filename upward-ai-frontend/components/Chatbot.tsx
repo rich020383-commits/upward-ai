@@ -9,7 +9,7 @@ export default function Chatbot() {
   
   // 🔥 ACTUALIZADO: El saludo premium de ventas para perfilar al cliente
   const [messages, setMessages] = useState([
-    { role: "bot", content: "¡Hola! Veo que estás listo para llevar tu empresa al siguiente nivel con Upward AI. Para entender mejor tu operación y asignarte el especialista adecuado, cuéntame: ¿Cuál es el proceso que más tiempo le consume a tu equipo actualmente?" }
+    { role: "bot", content: "¡Hola! Veo que estás listo para llevar tu empresa al siguiente nivel con Up AI. Para entender mejor tu operación y asignarte el especialista adecuado, cuéntame: ¿Cuál es el proceso que más tiempo le consume a tu equipo actualmente?" }
   ]);
   
   const [input, setInput] = useState("");
@@ -127,7 +127,7 @@ export default function Chatbot() {
                 {/* Textos del sistema */}
                 <div>
                   <h3 className="font-bold text-sm tracking-wide flex items-center gap-1 text-slate-100">
-                    Upward AI <Sparkles className="w-3 h-3 text-cyan-400" />
+                    Up AI <Sparkles className="w-3 h-3 text-cyan-400" />
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     {/* Efecto de "escribiendo/procesando" perpetuo muy sutil */}

@@ -19,7 +19,7 @@ class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=1000)
 
 SYSTEM_PROMPT = """
-Eres el Agente de Ventas Premium de 'Upward AI'. 
+Eres el Agente de Ventas Premium de 'Up AI'. 
 Tu objetivo NO es dar consultoría gratis, tu objetivo es PERFILAR RÁPIDO Y CERRAR LA CITA.
 
 REGLAS MILITARES DE COMPORTAMIENTO (CUMPLE O EL SISTEMA FALLARÁ):
