@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react"; // 🔥 Añadimos los hooks de React
-import AnimatedLogo from "@/components/AnimatedLogo";
+import { useState, useEffect } from "react"; 
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Lightbulb, Building2, Palette, MonitorSmartphone, Video, Bot, TrendingUp, CheckCircle2 } from "lucide-react";
 import ParticleBackground from "@/components/ParticleBackground";
 import Chatbot from "@/components/Chatbot"; 
-import LeadModal from "@/components/LeadModal"; // 🔥 Importamos tu nuevo formulario
+import LeadModal from "@/components/LeadModal"; 
 
 export default function Home() {
-  // 🔥 ESTADO Y OÍDO DEL MODAL
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -19,7 +18,6 @@ export default function Home() {
   }, []);
 
   const { scrollY } = useScroll();
-  // 🔥 CRISTAL OSCURO ACTIVADO: La barra se vuelve negra semi-transparente al hacer scroll
   const navBackground = useTransform(scrollY, [0, 50], ["rgba(3, 7, 18, 0)", "rgba(3, 7, 18, 0.85)"]);
   const navBackdrop = useTransform(scrollY, [0, 50], ["blur(0px)", "blur(12px)"]);
   const navBorder = useTransform(scrollY, [0, 50], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.1)"]);
@@ -39,18 +37,23 @@ export default function Home() {
   return (
     <main className="bg-[#FFFFFF] text-[#111827] font-sans selection:bg-blue-100 selection:text-blue-900 relative overflow-hidden">
       
-      {/* 🌌 LAS PARTÍCULAS POR ENCIMA */}
       <div className="fixed inset-0 z-40 pointer-events-none">
         <ParticleBackground />
       </div>
 
-      {/* NAVBAR DARK GLASS */}
       <motion.nav 
         style={{ backgroundColor: navBackground, backdropFilter: navBackdrop, borderColor: navBorder }}
         className="fixed top-0 w-full z-50 border-b transition-colors duration-300 px-6 py-3 flex justify-between items-center"
       >
         <div className="flex items-center gap-4">
-          <AnimatedLogo />
+          {/* 🔥 LOGO NUEVO INYECTADO AQUÍ */}
+          <Image 
+            src="/upai.png" 
+            alt="Logo Up AI" 
+            width={45} 
+            height={45} 
+            className="object-contain drop-shadow-md"
+          />
           <span className="font-medium text-lg tracking-widest text-white">UP AI</span>
         </div>
         
@@ -62,7 +65,6 @@ export default function Home() {
         </button>
       </motion.nav>
 
-      {/* 🌌 HERO SECTION DARK MODE */}
       <section className="relative min-h-screen bg-[#030712] flex flex-col justify-center overflow-hidden">
         
         <div className="container mx-auto px-6 text-center relative z-10 pt-32 pb-20">
@@ -86,10 +88,9 @@ export default function Home() {
                 Potenciamos tu visión mediante infraestructura operativa automatizada e inteligencia artificial de vanguardia.
               </p>
 
-              {/* Botones de acción */}
               <div className="flex flex-col sm:flex-row gap-5 justify-center relative z-50">
                 <button 
-                  onClick={() => window.dispatchEvent(new Event('abrir-chat'))} // 🔥 Reconectado
+                  onClick={() => window.dispatchEvent(new Event('abrir-chat'))}
                   className="group bg-blue-600 text-white px-8 py-4 rounded-full font-medium flex items-center justify-center gap-2 hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all duration-300"
                 >
                   Agenda una demostración
@@ -97,7 +98,6 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* Estadísticas minimalistas */}
               <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto opacity-80">
                 {[
                   { val: "24/7", label: "Disponibilidad" },
@@ -123,7 +123,6 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-white z-30 pointer-events-none"></div>
       </section>
 
-      {/* SOLUCIONES SECTION */}
       <section id="soluciones" className="py-32 bg-white relative z-10">
         <div className="container mx-auto px-6 relative z-50">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-center mb-20 text-[#111827]">¿En qué etapa está tu negocio?</h2>
@@ -142,7 +141,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PROCESO SECTION */}
       <section id="proceso" className="py-32 bg-[#111827] text-white relative z-10 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#2563EB] blur-[120px] rounded-full opacity-20 pointer-events-none"></div>
         <div className="container mx-auto px-6 relative z-50 text-center">
@@ -161,7 +159,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA SECTION */}
       <section className="min-h-[60vh] bg-[#2563EB] flex items-center justify-center relative z-10 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 pointer-events-none"></div>
         <div className="container mx-auto px-6 text-center relative z-50">
@@ -169,7 +166,7 @@ export default function Home() {
             El futuro de tu empresa <br className="hidden md:block"/> comienza hoy.
           </h2>
           <button 
-            onClick={() => window.dispatchEvent(new Event('abrir-chat'))} // 🔥 Reconectado
+            onClick={() => window.dispatchEvent(new Event('abrir-chat'))}
             className="bg-white text-[#111827] px-10 py-5 rounded-full text-lg font-bold hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all duration-300"
           >
             Agenda una demostración
@@ -177,13 +174,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER PREMIUM */}
       <footer className="bg-white py-12 border-t border-gray-100 relative z-10">
         <div className="container mx-auto px-6 flex flex-col items-center md:items-start md:flex-row justify-between text-sm text-[#6B7280] font-medium relative z-50">
           
           <div className="flex flex-col items-center md:items-start mb-8 md:mb-0">
             <div className="flex items-center gap-4 mb-4 text-[#111827]">
-              <AnimatedLogo />
+              {/* 🔥 LOGO NUEVO INYECTADO AQUÍ TAMBIÉN */}
+              <Image 
+                src="/upai.png" 
+                alt="Logo Up AI" 
+                width={45} 
+                height={45} 
+                className="object-contain"
+              />
               <span className="font-bold text-xl tracking-tighter">UP AI</span>
             </div>
             
@@ -200,12 +203,10 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* 🤖 EL WIDGET DE TU CHATBOT IA */}
       <div className="relative z-50">
         <Chatbot />
       </div>
 
-      {/* 📋 EL FORMULARIO DE CAPTURA (Se abre cuando isModalOpen es true) */}
       <div className="relative z-[60]">
         <LeadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </div>
