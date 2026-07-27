@@ -5,7 +5,7 @@ from app.routes import chat
 
 # 1. PRIMERO creamos la variable app
 app = FastAPI(
-    title="Upward AI API",
+    title="Upway Business API",
     description="Backend de alto rendimiento para la automatización e integración de IA",
     version="1.0.0"
 )
@@ -14,7 +14,9 @@ app = FastAPI(
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://upward-ai-frontend.onrender.com", # <-- ¡La llave maestra para producción!
+    "https://upward-ai-frontend.onrender.com", 
+    "https://upway.business",      # 🔥 Tu nuevo dominio principal
+    "https://www.upway.business"   # 🔥 Tu nuevo subdominio
 ]
 
 app.add_middleware(
@@ -25,15 +27,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 3. TERCERO incluimos las rutas (ahora sí funciona porque app ya existe)
+# 3. TERCERO incluimos las rutas 
 app.include_router(leads.router)
-app.include_router(chat.router) # ← Lo movimos para acá abajo
+app.include_router(chat.router) 
 
 @app.get("/")
 def read_root():
     return {
-        "brand": "Upward AI",
+        "brand": "Upway Business",
         "status": "Online",
         "version": "1.0.0",
-        "environment": "Development"
+        "environment": "Production"
     }
