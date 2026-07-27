@@ -7,15 +7,13 @@ import { MessageSquare, X, Send, Bot, Sparkles } from "lucide-react";
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   
-  // 🔥 ACTUALIZADO: El saludo premium de ventas para perfilar al cliente
   const [messages, setMessages] = useState([
-    { role: "bot", content: "¡Hola! Veo que estás listo para llevar tu empresa al siguiente nivel con Up AI. Para entender mejor tu operación y asignarte el especialista adecuado, cuéntame: ¿Cuál es el proceso que más tiempo le consume a tu equipo actualmente?" }
+    { role: "bot", content: "¡Hola! Veo que estás listo para llevar tu empresa al siguiente nivel con Upway Business. Para entender mejor tu operación y asignarte el especialista adecuado, cuéntame: ¿Cuál es el proceso que más tiempo le consume a tu equipo actualmente?" }
   ]);
   
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
-  // Referencia para hacer scroll automático hasta el último mensaje
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -26,18 +24,12 @@ export default function Chatbot() {
     scrollToBottom();
   }, [messages, isLoading]);
 
-  // 🔥 NUEVO: El "oído" del chatbot para escuchar los botones de la página web
   useEffect(() => {
     const escucharBoton = () => {
       setIsOpen(true); 
     };
-
     window.addEventListener('abrir-chat', escucharBoton);
-
-    // Limpieza del evento por seguridad
-    return () => {
-      window.removeEventListener('abrir-chat', escucharBoton);
-    };
+    return () => window.removeEventListener('abrir-chat', escucharBoton);
   }, []);
 
   const sendMessage = async () => {
@@ -49,7 +41,6 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
-      // Apuntamos dinámicamente al backend real en Render
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://upward-ai-8n4i.onrender.com";
       const res = await fetch(`${baseUrl}/api/chat/`, {
         method: "POST",
@@ -58,37 +49,42 @@ export default function Chatbot() {
       });
       const data = await res.json();
       
-      // Simulamos un pequeño retraso para que se vea el efecto de "Pensando..."
+      // Simulación de pensamiento orgánico (entre 1 y 2 segundos)
+      const organicDelay = Math.floor(Math.random() * 1000) + 1000;
       setTimeout(() => {
         setMessages((prev) => [...prev, { role: "bot", content: data.reply }]);
         setIsLoading(false);
-      }, 800);
+      }, organicDelay);
 
     } catch (error) {
       setTimeout(() => {
         setMessages((prev) => [...prev, { role: "bot", content: "Lo siento, mis servidores están en mantenimiento. Por favor, intenta de nuevo en unos minutos." }]);
         setIsLoading(false);
-      }, 800);
+      }, 1500);
     }
   };
 
   return (
     <>
-      {/* Botón flotante Premium */}
+      {/* 🌟 1. Efecto de "Respiración" en el botón cuando está inactivo */}
       <motion.button 
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        whileHover={{ scale: 1.05 }}
+        animate={{ 
+          scale: isOpen ? 1 : [1, 1.05, 1],
+          boxShadow: isOpen 
+            ? "0px 0px 15px rgba(0,0,0,0.2)" 
+            : ["0px 0px 15px rgba(37,99,235,0.4)", "0px 0px 25px rgba(34,211,238,0.7)", "0px 0px 15px rgba(37,99,235,0.4)"]
+        }}
+        transition={{ duration: isOpen ? 0.2 : 2.5, repeat: isOpen ? 0 : Infinity, ease: "easeInOut" }}
+        whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-premium hover:shadow-2xl transition-all z-50 flex items-center justify-center ${
+        className={`fixed bottom-6 right-6 p-4 rounded-full transition-colors z-50 flex items-center justify-center ${
           isOpen ? 'bg-slate-900 text-white' : 'bg-blue-600 text-white'
         }`}
       >
         {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
       </motion.button>
 
-      {/* Ventana de chat Glassmorphism */}
       <AnimatePresence>
         {isOpen && (
           <motion.div 
@@ -98,66 +94,66 @@ export default function Chatbot() {
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
             className="fixed bottom-24 right-6 w-[350px] md:w-[400px] h-[550px] bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-200 z-50 flex flex-col overflow-hidden"
           >
-            {/* Header del Chat con Orbe Neuronal Premium */}
             <div className="bg-slate-950 p-5 text-white flex items-center justify-between shrink-0 border-b border-slate-800 shadow-sm">
               <div className="flex items-center space-x-4">
                 
-                {/* 🌌 EL ORBE ANIMADO (Reemplaza al video) */}
+                {/* 🌟 3. Núcleo Dinámico: Reacciona cuando está procesando (isLoading) */}
                 <div className="relative w-12 h-12 flex items-center justify-center">
-                  {/* Anillo exterior rápido */}
                   <motion.div
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.8, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 rounded-full border-2 border-cyan-400/50"
+                    animate={{ 
+                      scale: isLoading ? [1, 1.3, 1] : [1, 1.15, 1], 
+                      opacity: isLoading ? [0.6, 1, 0.6] : [0.2, 0.6, 0.2],
+                      rotate: isLoading ? 180 : 0
+                    }}
+                    transition={{ duration: isLoading ? 1 : 3, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 rounded-full border-2 border-cyan-400/50 border-t-transparent"
                   />
-                  {/* Anillo de onda expansiva lenta */}
                   <motion.div
-                    animate={{ scale: [1, 1.4, 1], opacity: [0.1, 0.4, 0.1] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                    className="absolute inset-0 rounded-full border border-blue-500/30"
+                    animate={{ 
+                      scale: isLoading ? [1, 1.5, 1] : [1, 1.3, 1], 
+                      opacity: isLoading ? [0.3, 0.7, 0.3] : [0.1, 0.3, 0.1],
+                      rotate: isLoading ? -180 : 0
+                    }}
+                    transition={{ duration: isLoading ? 1.5 : 4, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 rounded-full border border-blue-500/40 border-b-transparent"
                   />
-                  {/* Núcleo central brillante */}
-                  <div className="relative w-8 h-8 bg-gradient-to-tr from-blue-600 to-cyan-300 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.8)] flex items-center justify-center z-10">
+                  <motion.div 
+                    animate={{ boxShadow: isLoading ? "0 0 25px rgba(34,211,238,1)" : "0 0 10px rgba(34,211,238,0.5)" }}
+                    className="relative w-8 h-8 bg-gradient-to-tr from-blue-600 to-cyan-300 rounded-full flex items-center justify-center z-10"
+                  >
                     <Bot className="w-4 h-4 text-white" />
-                  </div>
-                  {/* Punto de estado "Online" */}
+                  </motion.div>
                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-950 rounded-full z-20 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
                 </div>
 
-                {/* Textos del sistema */}
                 <div>
                   <h3 className="font-bold text-sm tracking-wide flex items-center gap-1 text-slate-100">
-                    Up AI <Sparkles className="w-3 h-3 text-cyan-400" />
+                    Upway System <Sparkles className="w-3 h-3 text-cyan-400" />
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    {/* Efecto de "escribiendo/procesando" perpetuo muy sutil */}
                     <motion.div 
-                      animate={{ opacity: [0.4, 1, 0.4] }} 
-                      transition={{ duration: 1.5, repeat: Infinity }}
+                      animate={{ opacity: isLoading ? [1, 0.2, 1] : [0.4, 1, 0.4] }} 
+                      transition={{ duration: isLoading ? 0.5 : 1.5, repeat: Infinity }}
                       className="w-1.5 h-1.5 bg-cyan-400 rounded-full"
                     />
                     <p className="text-[10px] text-cyan-400 uppercase tracking-widest font-semibold">
-                      Sistema Operativo
+                      {isLoading ? "Procesando Datos..." : "Sistema Operativo"}
                     </p>
                   </div>
                 </div>
               </div>
               
-              {/* Botón de cerrar superior */}
-              <button 
-                onClick={() => setIsOpen(false)} 
-                className="text-slate-500 hover:text-white hover:rotate-90 transition-all duration-300"
-              >
+              <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white hover:rotate-90 transition-all duration-300">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            {/* Área de mensajes */}
             <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50 scroll-smooth">
               {messages.map((m, i) => (
                 <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.9, originY: 1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 250, damping: 20 }}
                   key={i} 
                   className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
@@ -168,18 +164,17 @@ export default function Chatbot() {
                         : 'bg-white text-slate-700 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100'
                     }`}
                   >
-                    {/* 🔥 LA MAGIA: Si la IA manda el gatillo, dibujamos el botón */}
                     {m.content.includes('[ABRIR_FORMULARIO]') ? (
                       <div className="flex flex-col gap-3">
-                        {/* Imprimimos el texto sin la etiqueta secreta */}
                         <span>{m.content.replace('[ABRIR_FORMULARIO]', '')}</span>
-                        {/* Dibujamos el botón que dispara el evento al Modal */}
-                        <button 
+                        <motion.button 
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
                           onClick={() => window.dispatchEvent(new Event('abrir-modal-lead'))}
-                          className="bg-blue-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-blue-700 hover:shadow-lg transition-all shadow-sm flex items-center justify-center gap-2 mt-2"
+                          className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-2.5 rounded-lg font-semibold shadow-md flex items-center justify-center gap-2 mt-2"
                         >
                           📋 Llenar Formulario
-                        </button>
+                        </motion.button>
                       </div>
                     ) : (
                       <span>{m.content}</span>
@@ -188,38 +183,52 @@ export default function Chatbot() {
                 </motion.div>
               ))}
               
-              {/* Animación de "Pensando..." */}
-              {isLoading && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                  <div className="bg-white p-4 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100 flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                </motion.div>
-              )}
+              {/* 🌟 4. Pensamiento simulado con transición suave */}
+              <AnimatePresence>
+                {isLoading && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="flex justify-start"
+                  >
+                    <div className="bg-white p-4 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100 flex items-center space-x-2">
+                      <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0 }} className="w-2 h-2 bg-cyan-500 rounded-full" />
+                      <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }} className="w-2 h-2 bg-blue-500 rounded-full" />
+                      <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }} className="w-2 h-2 bg-blue-700 rounded-full" />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input de texto */}
             <div className="p-4 bg-white border-t border-slate-100 shrink-0">
-              <div className="relative flex items-center">
+              {/* 🌟 2. Reacción al Teclado: Brillo de neón al escribir */}
+              <motion.div 
+                animate={{ 
+                  boxShadow: input.length > 0 ? "0px 0px 12px rgba(34,211,238,0.4)" : "0px 0px 0px rgba(34,211,238,0)",
+                  borderColor: input.length > 0 ? "rgba(34,211,238,0.5)" : "rgba(226,232,240,1)"
+                }}
+                className="relative flex items-center rounded-full border transition-colors bg-slate-50"
+              >
                 <input 
                   value={input} 
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                   placeholder="Escribe tu consulta aquí..."
                   disabled={isLoading}
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-full pl-5 pr-12 py-3.5 text-sm text-slate-900 outline-none transition-all disabled:opacity-50"
+                  className="w-full bg-transparent pl-5 pr-12 py-3.5 text-sm text-slate-900 outline-none disabled:opacity-50 rounded-full"
                 />
-                <button 
+                <motion.button 
+                  whileTap={{ scale: 0.9 }}
                   onClick={sendMessage} 
                   disabled={isLoading || !input.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white p-2 rounded-full transition-colors flex items-center justify-center"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-cyan-500 disabled:bg-slate-300 text-white p-2 rounded-full transition-colors flex items-center justify-center shadow-sm"
                 >
                   <Send className="w-4 h-4" />
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             </div>
           </motion.div>
         )}
