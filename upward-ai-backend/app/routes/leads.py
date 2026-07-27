@@ -1,6 +1,5 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import os
+import requests
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
@@ -11,78 +10,102 @@ router = APIRouter(
     tags=["Leads & Asesorías"]
 )
 
-# Esquema de validación de datos (Pydantic) - ¡Intacto con tu estructura original!
+# Esquema de validación original para capturar los datos del prospecto[cite: 1]
 class LeadCreate(BaseModel):
-    nombre_completo: str = Field(..., min_length=3, max_length=100, example="Andrés Mendoza")
-    empresa: str = Field(..., min_length=2, max_length=100, example="Upway Business")
-    email: EmailStr = Field(..., example="andres@upway.business")
-    telefono: str = Field(..., min_length=7, max_length=20, example="+573001234567")
-    tamano_empresa: str = Field(..., example="11-50 empleados")
-    mensaje: Optional[str] = Field(None, max_length=500, example="Queremos automatizar nuestro CRM.")
+    nombre_completo: str = Field(..., min_length=3, max_length=100)
+    empresa: str = Field(..., min_length=2, max_length=100)
+    email: EmailStr = Field(...)
+    telefono: str = Field(...)
+    tamano_empresa: str = Field(...)
+    mensaje: Optional[str] = Field(None)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def registrar_lead(lead: LeadCreate):
-    # 1. Configuración de tu servidor SMTP 
-    SMTP_SERVER = "smtp.gmail.com"
-    SMTP_PORT = 587
-    SENDER_EMAIL = "tu_correo@gmail.com"          # 👉 Pon tu correo aquí
-    SENDER_PASSWORD = "dchy cfyj zxtp gfsv"       # 👉 Tu contraseña de aplicación (sin espacios si da error)
-    RECEIVER_EMAIL = "tu_correo@gmail.com"        # 👉 El correo donde quieres que te lleguen las notificaciones
-
-    # 2. Construcción del mensaje premium
-    msg = MIMEMultipart()
-    msg['From'] = f"Upway Business <{SENDER_EMAIL}>"
-    msg['To'] = RECEIVER_EMAIL
-    msg['Subject'] = f"🚨 NUEVO LEAD - UPWAY BUSINESS: {lead.nombre_completo} - {lead.empresa}"
-
-    # Formateamos el mensaje incluyendo todos los campos de tu esquema
-    mensaje_texto = lead.mensaje if lead.mensaje else "No dejó mensaje adicional."
     
-    cuerpo_mensaje = f"""
-    ¡Hola! Has recibido una nueva solicitud de servicio desde la plataforma oficial de Upway Business.
+    # 🔐 Leemos la llave secreta directamente desde la memoria segura de Render
+    RESEND_API_KEY = os.getenv("RESEND_API_KEY") 
+    
+    REMITENTE = "notificaciones@upway.business" 
+    CORREO_CENTRAL = "upwaybusiness@gmail.com"
 
-    --------------------------------------------------
-    📌 DETALLES DEL PROSPECTO
-    --------------------------------------------------
-    👤 Nombre: {lead.nombre_completo}
-    🏢 Empresa: {lead.empresa}
-    ✉️ Correo: {lead.email}
-    📞 Teléfono: {lead.telefono}
-    👥 Tamaño de la empresa: {lead.tamano_empresa}
-    💬 Mensaje/Requerimiento: {mensaje_texto}
+    mensaje_texto = lead.mensaje if lead.mensaje else "No dejó mensaje adicional."
 
-    --------------------------------------------------
-    ⚡ ACCIÓN RÁPIDA
-    --------------------------------------------------
-    Abrir chat directo en WhatsApp:
-    https://wa.me/{lead.telefono.replace('+', '').replace(' ', '')}
-
-    --
-    Mensaje generado automáticamente por la infraestructura de Upway Business.
+    # ==========================================
+    # 1. PLANTILLA PARA EL CLIENTE FINAL
+    # ==========================================
+    html_cliente = f"""
+    <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
+        <div style="background-color: #0f172a; padding: 20px; text-align: center; color: white;">
+            <h2 style="margin: 0;">¡Hola {lead.nombre_completo}! Bienvenido a Upway</h2>
+        </div>
+        <div style="padding: 20px; background-color: #f8fafc; color: #334155;">
+            <p>Hemos recibido correctamente tu solicitud para <strong>{lead.empresa}</strong>.</p>
+            <p>Nuestro equipo de especialistas en automatización está analizando tu caso. Nos pondremos en contacto contigo pronto al número que nos proporcionaste ({lead.telefono}) para agendar nuestra primera sesión.</p>
+            <p>Si tienes información adicional, puedes responder directamente a este correo.</p>
+        </div>
+        <div style="padding: 20px; text-align: center; font-size: 12px; color: #94a3b8; background-color: #ffffff;">
+            <p>Upway Business - Liderando la innovación B2B</p>
+        </div>
+    </div>
     """
 
-    msg.attach(MIMEText(cuerpo_mensaje, 'plain', 'utf-8'))
+    # ==========================================
+    # 2. PLANTILLA PARA TU EQUIPO (INTELIGENCIA B2B)
+    # ==========================================
+    html_admin = f"""
+    <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
+        <div style="background-color: #2563eb; padding: 20px; text-align: center; color: white;">
+            <h2 style="margin: 0;">🚨 NUEVO LEAD B2B CAPTURADO</h2>
+        </div>
+        <div style="padding: 20px; background-color: #f8fafc; color: #334155;">
+            <p><strong>👤 Nombre:</strong> {lead.nombre_completo}</p>
+            <p><strong>🏢 Empresa:</strong> {lead.empresa}</p>
+            <p><strong>✉️ Correo:</strong> {lead.email}</p>
+            <p><strong>📞 Teléfono:</strong> {lead.telefono}</p>
+            <p><strong>👥 Tamaño:</strong> {lead.tamano_empresa}</p>
+            <p><strong>💬 Mensaje:</strong> {mensaje_texto}</p>
+        </div>
+        <div style="padding: 20px; text-align: center; background-color: #ffffff;">
+            <a href="https://wa.me/{lead.telefono.replace('+', '').replace(' ', '')}" 
+               style="display: inline-block; background-color: #22c55e; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+               Contactar por WhatsApp
+            </a>
+        </div>
+    </div>
+    """
 
-    # 3. Envío seguro a través del servidor de Google
+    url = "https://api.resend.com/emails"
+    headers = {
+        "Authorization": f"Bearer {RESEND_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    payload_cliente = {
+        "from": f"Upway Business <{REMITENTE}>",
+        "to": [lead.email],
+        "subject": "Hemos recibido tu solicitud - Upway Business",
+        "html": html_cliente
+    }
+
+    payload_admin = {
+        "from": f"Sistema Upway <{REMITENTE}>",
+        "to": [CORREO_CENTRAL],
+        "subject": f"🎯 NUEVO PROSPECTO: {lead.nombre_completo} - {lead.empresa}",
+        "html": html_admin
+    }
+
     try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()  
-        server.login(SENDER_EMAIL, SENDER_PASSWORD.replace(" ", "")) # Limpiamos espacios por si acaso
-        server.send_message(msg)
-        server.quit()
+        requests.post(url, json=payload_cliente, headers=headers)
+        requests.post(url, json=payload_admin, headers=headers)
         
-        # Respuesta de éxito manteniendo tu estructura exacta para el frontend
         return {
             "status": "success",
-            "message": "Solicitud de asesoría recibida y enviada por correo exitosamente.",
-            "data": {
-                "empresa": lead.empresa,
-                "registro_at": datetime.utcnow().isoformat()
-            }
+            "message": "Correos de confirmación y notificación enviados exitosamente."
         }
+            
     except Exception as e:
-        print(f"Error crítico al enviar correo: {e}")
+        print(f"Error crítico de conexión: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error interno al procesar la solicitud: {str(e)}"
+            detail="Error de red al procesar las notificaciones."
         )
