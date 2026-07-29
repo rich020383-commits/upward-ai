@@ -57,6 +57,16 @@ export default function Home() {
           <span className="font-medium text-lg tracking-widest text-white">UP AI</span>
         </div>
         
+        {/* 🔥 NUEVO: Enlaces de Acceso Directo al Dashboard 🔥 */}
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+          <a href="/dashboard/bots" className="hover:text-white transition-colors duration-200">
+            Agente IA
+          </a>
+          <a href="/dashboard/inventario" className="hover:text-white transition-colors duration-200">
+            Inventario
+          </a>
+        </div>
+
         <button 
           onClick={() => window.dispatchEvent(new Event('abrir-chat'))}
           className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(37,99,235,0.4)]"
