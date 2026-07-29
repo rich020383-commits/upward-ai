@@ -281,6 +281,35 @@ app.include_router(chat.router)
 app.include_router(inventario.router) 
 app.include_router(chat_tiendas.router) 
 
+# 🕵️‍♂️ 1. COMANDO SECRETO DEL JEFE (REPORTE) 🕵️‍♂️
+        if mensaje_texto.strip().lower() == "reporte upway":
+            pedidos = db.query(models.Pedido).filter(models.Pedido.tienda_id == id_tienda).all()
+            total_ventas = sum(p.total for p in pedidos if p.total)
+            cantidad = len(pedidos)
+            
+            resumen_jefe = f"""Eres el gerente IA de Upway. Escribe un reporte corto, profesional y motivador para WhatsApp dirigido al dueño (Rich). 
+            Dile que tienes los números actualizados de la plataforma:
+            - Pedidos cerrados: {cantidad}
+            - Total en ventas: ${total_ventas}
+            Usa emojis corporativos y despídete diciendo que el sistema Upway sigue operando al 100% y atendiendo a los clientes."""
+            
+            modelo_jefe = genai.GenerativeModel('gemini-3.5-flash')
+            texto_final = modelo_jefe.generate_content(resumen_jefe).text
+            
+            # Despachamos el reporte y CORTAMOS la función para que no te trate como cliente
+            token_limpio = os.getenv("WHATSAPP_TOKEN", "").strip().strip('"').strip("'")
+            url = f"https://graph.facebook.com/v21.0/{id_tienda}/messages"
+            headers = {"Authorization": f"Bearer {token_limpio}", "Content-Type": "application/json"}
+            payload = {"messaging_product": "whatsapp", "to": telefono_cliente, "type": "text", "text": {"body": texto_final}}
+            
+            async with httpx.AsyncClient() as client:
+                await client.post(url, json=payload, headers=headers)
+            
+            return # 🛑 Salimos inmediatamente
+
+        # 👇 A PARTIR DE AQUÍ SIGUE EL CÓDIGO NORMAL DEL CAJERO 👇
+        productos_db = db.query(models.Producto).filter(
+
 @app.get("/")
 def read_root():
     return {"brand": "Up Ai", "status": "Online"}
